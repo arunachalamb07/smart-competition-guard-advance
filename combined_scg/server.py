@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(APP_DIR, "competition.db")
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 
 # Admin password: set SMART_GUARD_ADMIN_PASSWORD, otherwise a random one is generated and printed at startup.
 ADMIN_PASSWORD = os.environ.get("SMART_GUARD_ADMIN_PASSWORD") or secrets.token_urlsafe(9)
@@ -240,8 +240,8 @@ def server_info():
 def health():
     return jsonify(ok=True, service="Smart Competition Guard")
 
-if __name__ == "__main__":
-    init_db()
+# Initialize database when Gunicorn imports the app
+init_db()
+
+if _name_ == "_main_":
     print("ADMIN PASSWORD:", ADMIN_PASSWORD)
-    # 0.0.0.0 allows other laptops on the same trusted LAN to connect.
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=False)
