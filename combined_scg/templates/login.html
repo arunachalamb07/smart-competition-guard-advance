@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Competition Guard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.role-btn{padding:22px 10px;font-size:1rem;cursor:pointer;text-align:center;width:100%}
+.role-btn span{display:block;font-size:2rem;margin-bottom:6px}
+.role-btn.active{outline:2px solid #9df2cf}
+#adminBox{display:none}
+</style></head>
+<body><main style="max-width:460px;margin:8vh auto;">
+<h2>SMART GUARD</h2>
+<p class="muted">நீங்கள் யார்? Select your role</p>
+
+<div class="role-grid">
+  <button type="button" class="role-btn" id="btnAdmin" onclick="showAdmin()"><span>🧑‍⚖️</span>Admin / Judge</button>
+  <button type="button" class="role-btn" id="btnStudent" onclick="location.href='/join'"><span>🎓</span>Student / Participant</button>
+</div>
+
+<div class="panel" id="adminBox">
+  <div class="eyebrow">JUDGE · ADMIN LOGIN</div><h3>Admin login</h3>
+  <p class="muted">Team create செய்ய admin password தேவை.</p>
+  <form method="post" action="/login" class="team-form">
+    <input type="password" name="password" placeholder="Admin password" required>
+    <button type="submit">Login</button>
+  </form>
+  {% if error %}<p style="color:#ff8b9a">{{ error }}</p>{% endif %}
+</div>
+
+</main>
+<script>
+function showAdmin(){
+  document.getElementById('adminBox').style.display='block';
+  document.getElementById('btnAdmin').classList.add('active');
+}
+{% if error %}showAdmin();{% endif %}
+</script>
+</body></html>
