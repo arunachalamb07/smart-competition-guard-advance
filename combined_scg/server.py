@@ -240,8 +240,12 @@ def server_info():
 def health():
     return jsonify(ok=True, service="Smart Competition Guard")
 
-# Initialize database when Gunicorn imports the app
+# Initialize database for both local and Render deployment
 init_db()
 
 if _name_ == "_main_":
-    print("ADMIN PASSWORD:", ADMIN_PASSWORD)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "5000")),
+        debug=False
+    )
